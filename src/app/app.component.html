@@ -1,20 +1,139 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container app">
+  <div class="alert alert-success alert-dismissable" *ngIf="mensaje">
+      <a href="#" class="close" (click)="closeAlert()">
+        &times;
+      </a>
+      {{ mensaje }}
+  </div>
+  <h1 class="text-center">{{ title }}</h1>
+  <br><br>
+  <div class="row">
+    <!-- Formulario adicionar -->
+    <div class="col-sm-8">
+     <form class="form-horizontal">
+       <div class="form-group">
+         <label for="nombre" class="control-label col-sm-2">
+           Nombre
+         </label>
+         <div class="col-sm-10">
+           <input type="text" class="form-control" id="nombre"
+             name="nombre" [(ngModel)]="model.nombre"
+             placeholder="Nombre completo">
+         </div>
+       </div>
+       <div class="form-group">
+         <label for="profesion" class="control-label col-sm-2">
+           Profesion
+         </label>
+         <div class="col-sm-10">
+           <input type="text" class="form-control" id="profesion"
+             name="profesion" [(ngModel)]="model.profesion"
+             placeholder="Ingrese su profesion">
+         </div>
+       </div>
+       <div class="form-group">
+         <label for="email" class="control-label col-sm-2">
+           Email
+         </label>
+         <div class="col-sm-10">
+           <input type="text" class="form-control" id="email"
+             name="email" [(ngModel)]="model.email"
+             placeholder="ejemplo@gmail.com">
+         </div>
+       </div>
+       <div class="form-group">
+         <div class="col-sm-10 col-sm-offset-2">
+           <button type="button" class="btn btn-primary" (click)="adicionarEmpleado()">
+             Guardar
+           </button>
+         </div>
+       </div>
+     </form>
+    </div>
+    <!-- / Formulario adicionar -->
 
+    <div class="col-sm-4">
+      <img width="200" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+
+    <!-- Tabla empleados -->
+    <div class="col-sm-12">
+      <h2>Mostrar Empleado</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Profesion</th>
+            <th>Email</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empleado of empleados; let i=index">
+            <td>{{ empleado.nombre }}</td>
+            <td>{{ empleado.profesion }}</td>
+            <td>{{ empleado.email }}</td>
+            <td style="width:200px;">
+              <a (click)="editarEmpleado(i)" class="btn btn-success" data-toggle="modal" data-target="#myModal">Editar</a>
+              <a (click)="eliminarEmpleado(i)" class="btn btn-danger">Eliminar</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- / Tabla empleados -->
+
+    <!-- Modal editar empleado -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Editar Empleado</h4>
+          </div>
+         <!-- Formulario editar -->
+          <form class="form-horizontal">
+            <div class="modal-body">
+                 <div class="form-group">
+                   <label for="nombre" class="control-label col-sm-2">
+                     Nombre
+                   </label>
+                   <div class="col-sm-10">
+                     <input type="text" class="form-control" id="nombre"
+                       name="nombre" [(ngModel)]="model_edit.nombre"
+                       placeholder="Nombre completo">
+                   </div>
+                 </div>
+                 <div class="form-group">
+                   <label for="profesion" class="control-label col-sm-2">
+                     Profesion
+                   </label>
+                   <div class="col-sm-10">
+                     <input type="text" class="form-control" id="profesion"
+                       name="profesion" [(ngModel)]="model_edit.profesion"
+                       placeholder="Ingrese su profesion">
+                   </div>
+                 </div>
+                 <div class="form-group">
+                   <label for="email" class="control-label col-sm-2">
+                     Email
+                   </label>
+                   <div class="col-sm-10">
+                     <input type="text" class="form-control" id="email"
+                       name="email" [(ngModel)]="model_edit.email"
+                       placeholder="ejemplo@gmail.com">
+                   </div>
+                 </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" (click)="actualizarEmpleado(i)" data-dismiss="modal">Guardar</button>
+            </div>
+          </form>
+          <!-- / Formulario editar -->
+        </div>
+      </div>
+    </div>
+    <!-- / Modal editar empleado -->
+  </div>
+</div>
